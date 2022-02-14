@@ -17,10 +17,10 @@
     "url": "https://github.com/xguhx/fragments-ui/issues"
   },
   "homepage": "https://github.com/xguhx/fragments-ui#readme",
-  "devDependencies": {
-    "parcel": "^2.2.1"
-  },
   "dependencies": {
     "aws-amplify": "^4.3.12"
+  },
+  "devDependencies": {
+    "parcel": "^2.2.1"
   }
 }
