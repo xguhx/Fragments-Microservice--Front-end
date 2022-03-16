@@ -52,7 +52,7 @@ async function getUser() {
     const username = currentAuthenticatedUser.username;
 
     // Get the user's Identity Token, which we'll use later with our
-    // microservce. See discussion of various tokens:
+    // microservice. See discussion of various tokens:
     // https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html
     const idToken = currentAuthenticatedUser.signInUserSession.idToken.jwtToken;
     const accessToken =

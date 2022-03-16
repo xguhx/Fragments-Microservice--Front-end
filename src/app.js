@@ -2,12 +2,16 @@
 
 import { Auth, getUser } from "./auth";
 import { getUserFragments } from "./api";
+const apiUrl = process.env.API_URL;
 
 async function init() {
   // Get our UI elements
   const userSection = document.querySelector("#user");
   const loginBtn = document.querySelector("#login");
+  const metadataBtn = document.querySelector("#metadata");
   const logoutBtn = document.querySelector("#logout");
+  const postBtn = document.querySelector("#post");
+  const post2Btn = document.querySelector("#postJson");
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -31,6 +35,49 @@ async function init() {
 
     return;
   }
+
+  metadataBtn.onclick = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/v1/fragments?expand=1`, {
+        headers: {
+          // Include the user's ID Token in the request so we're authorized
+          Authorization: `Bearer ${user.idToken}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error(`${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
+      console.log("Got user fragments metadata", { data });
+    } catch (err) {
+      console.error("Unable to call GET /v1/fragments?expand=1", { err });
+    }
+  };
+
+  //debugger;
+  postBtn.onclick = async () => {
+    const res = await fetch(`${apiUrl}/v1/fragments`, {
+      method: "POST",
+      body: document.querySelector("#fragment").value,
+      headers: {
+        // Include the user's ID Token in the request so we're authorized
+        Authorization: `Bearer ${user.idToken}`,
+        "Content-Type": "text/*",
+      },
+    });
+  };
+
+  post2Btn.onclick = async () => {
+    const res = await fetch(`${apiUrl}/v1/fragments`, {
+      method: "POST",
+      body: document.querySelector("#fragmentJson").value,
+      headers: {
+        // Include the user's ID Token in the request so we're authorized
+        Authorization: `Bearer ${user.idToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  };
 
   // Log the user info for debugging purposes
   console.log({ user });
