@@ -31,6 +31,9 @@ WORKDIR /app
 # Copy the package.json and package-lock.json files into /app
 COPY package*.json /app/
 
+# Copy our HTPASSWD file
+COPY ./.env /app/.env
+
 # RUN insrtuction will execute a command and cache this layer.
 # Install node dependencies defined in package-lock.json
 # npm ci install the exact versions from package-lock
