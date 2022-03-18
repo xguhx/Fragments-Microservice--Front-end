@@ -31,8 +31,7 @@ WORKDIR /app
 # Copy the package.json and package-lock.json files into /app
 COPY package*.json /app/
 
-
-# Copy our env file
+# Copy our HTPASSWD file
 COPY ./.env ./.env
 
 # RUN insrtuction will execute a command and cache this layer.
