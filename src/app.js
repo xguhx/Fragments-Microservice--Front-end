@@ -11,7 +11,8 @@ async function init() {
   const metadataBtn = document.querySelector("#metadata");
   const logoutBtn = document.querySelector("#logout");
   const postBtn = document.querySelector("#post");
-  const post2Btn = document.querySelector("#postJson");
+
+  var select = document.getElementById("content-type");
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -62,21 +63,10 @@ async function init() {
       headers: {
         // Include the user's ID Token in the request so we're authorized
         Authorization: `Bearer ${user.idToken}`,
-        "Content-Type": "text/*",
+        "Content-Type": select.options[select.selectedIndex].value,
       },
     });
-  };
-
-  post2Btn.onclick = async () => {
-    const res = await fetch(`${apiUrl}/v1/fragments`, {
-      method: "POST",
-      body: document.querySelector("#fragmentJson").value,
-      headers: {
-        // Include the user's ID Token in the request so we're authorized
-        Authorization: `Bearer ${user.idToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    document.querySelector("#fragment").value = "";
   };
 
   // Log the user info for debugging purposes

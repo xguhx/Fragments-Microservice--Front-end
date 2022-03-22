@@ -18,22 +18,23 @@
     </br>
       <input type="button" value="Get Metadata" id="metadata" />
     </br>
+    </br>
+    <label for="content-type">Select your Content-type:</label>
+    <select id="content-type">
+      <option value="text/*" selected>text/*</option>
+      <option value="application/json">application/json</option>
+    </select>
+    
+  </br>   
   </br>
       <form>
-        <label for="fragment">text/*:</label>
+        <label for="fragment">Enter your input:</label>
         <input type="text" id="fragment" name="fragment" /><br /><br />
-        <!-- FIX THIS INPUT TYPE BUTTON -->
         <input type="button" value="Submit" id="post" />
       </form>
     </br>
   </br>
-      <form>
-        <label for="fragment">application/json:</label>
-        <input type="text" id="fragmentJson" name="fragment" /><br /><br />
-        <!-- FIX THIS INPUT TYPE BUTTON -->
-        <input type="button" value="Submit" id="postJson" />
-      </form>
-    </section>
+
 
   </body>
 </html>
