@@ -10,7 +10,7 @@ LABEL description="Fragments UI node.js microservice"
 
 # Env  is used to define environment variables
 # We default to use port 8080 in our service
-ENV PORT=1234
+ENV PORT=80
 
 # Reduce npm spam when installing within Docker
 # https://docs.npmjs.com/cli/v8/using-npm/config#loglevel
