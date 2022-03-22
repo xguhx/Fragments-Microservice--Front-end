@@ -32,7 +32,7 @@ WORKDIR /app
 COPY package*.json /app/
 
 # Copy our HTPASSWD file
-COPY ./.env ./.env
+COPY ./.env /app/
 
 # RUN insrtuction will execute a command and cache this layer.
 # Install node dependencies defined in package-lock.json
@@ -40,10 +40,7 @@ COPY ./.env ./.env
 RUN npm ci
 
 
-# Copy src to /app/src/
-COPY ./src ./src
-
-RUN npx parcel build src/*
+RUN npx parcel build src/index.html
 
 FROM nginx:stable-alpine@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556 AS deploy
 COPY --from=dependencies /app/dist /usr/share/nginx/html/
