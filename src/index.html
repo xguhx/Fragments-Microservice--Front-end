@@ -24,16 +24,53 @@
       <option value="text/*" selected>text/*</option>
       <option value="application/json">application/json</option>
     </select>
+
+    <label for="Method">Select your Method:</label>
+    <select id="Method">
+      <option value="POST" >POST</option>
+      <option value="PUT">PUT</option>
+      <option value="DELETE">DELETE</option>
+    </select>
     
   </br>   
   </br>
       <form>
         <label for="fragment">Enter your input:</label>
         <input type="text" id="fragment" name="fragment" /><br /><br />
+        <label for="fragmentId">Enter the fragment id:</label>
+        <input type="text" id="fragmentId" name="fragmentId" /><br /><br />
         <input type="button" value="Submit" id="post" />
+
+      </br>   
+      </br>
+
+
+
+
+        <label for="input-file">Enter your input:</label>
+        <input type="file" id="input-file" accept="text/*, image/*" multiple>
+
+
+
+
       </form>
     </br>
+
+    
   </br>
+</br>
+
+<input type="button" value="Display Fragments" id="getFragments" />
+
+
+  <div id="listOfFragments">
+    <p id="p"></p>
+
+
+
+
+  </div>
+
 
 
   </body>
