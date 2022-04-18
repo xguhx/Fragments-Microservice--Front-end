@@ -34,18 +34,38 @@ COPY package*.json /app/
 # Copy our HTPASSWD file
 COPY ./.env /app/.env
 
+COPY ./src /app/src/
+
 # RUN insrtuction will execute a command and cache this layer.
 # Install node dependencies defined in package-lock.json
 # npm ci install the exact versions from package-lock
 RUN npm ci
 
+#####################################################################
 
-# Copy src to /app/src/
-COPY ./src /app/src/
+
+FROM node:16.13.2-apline3.14@sha256:d5ff6716e21e03983f8522b6e84f15f50a56e183085553e96d2801fc45dc3c74 AS production
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=dependencies /app /app
+
+COPY ./.env /app/.env
+
 
 RUN npx parcel build src/index.html
 
+
+########################################################################
+
 FROM nginx:stable-alpine@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556 AS deploy
-COPY --from=dependencies /app/dist /usr/share/nginx/html/
+COPY --from=production /app/dist /usr/share/nginx/html/
 
 EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3  \
+CMD wget --no-verbose --tries=1 --spider localhost:80 || exit 1
+
+
