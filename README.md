@@ -1,17 +1,17 @@
-# fragments-ui
+# Fragments Microservice - Front-end
 
-## The only purpose of this UI is to connect to AWS Cognito.
+---
 
-- It will manage the Register/Login/Logout.
+### Basic Front-end for the Fragments Microservice.
 
-- To do this firsts you need a AWS account.
+> This UI allows you to register to Cognito.
 
-- You need to create a user pool.
+> After Login, user will be able to post, edit or delete fragments.
 
-- You need to configure your user pool setup.
+> User can upload images.
 
-- Install aws-amplify (it will connect to your user pool).
+> User can convert images and text to different formats.
 
-- Configure aws-amplify, enter the correct connection information.
+---
 
-- On your script, use the aws-amplify functions to get access to the users information.
+This UI will be redone using React.
