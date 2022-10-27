@@ -22,14 +22,12 @@ import { useEffect, useState } from "react";
 Amplify.configure(awsConfig);
 
 function App({ user }) {
-  const [authUser, setAuthUser] = useState("This is a test");
+  const [authUser, setAuthUser] = useState();
   useEffect(() => {
     (async () => {
       setAuthUser(await getUser());
     })();
   }, []);
-
-  console.log(authUser, "AUTH USER!");
 
   const handleSignOut = () => {
     Auth.signOut();
@@ -38,7 +36,7 @@ function App({ user }) {
   return (
     <div className="App">
       <Sidebar user={authUser} signOut={handleSignOut} />
-      <Container fluid="md">
+      <Container fluid="md" className="mt-5">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
