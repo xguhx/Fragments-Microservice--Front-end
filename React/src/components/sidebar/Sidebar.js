@@ -1,23 +1,23 @@
 import "./Sidebar.css";
 import { Outlet, Link } from "react-router-dom";
-import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 
-function Sidebar(props) {
-  console.log(props.user);
-
+function Sidebar({ user, signOut }) {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand>Fragments</Navbar.Brand>
+        <Nav.Link as={Link} to="/">
+          <Navbar.Brand>Fragments</Navbar.Brand>
+        </Nav.Link>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="container-fluid">
             <Nav.Item>
-              <Nav.Link as={Link} to="/">
+              <Nav.Link as={Link} to="/newFragment">
                 Post Fragment
               </Nav.Link>
             </Nav.Item>
@@ -40,9 +40,7 @@ function Sidebar(props) {
             </Nav.Item>
 
             <Nav.Item className="ms-auto">
-              <Nav.Link as={Link} to="/logout">
-                Sign Out
-              </Nav.Link>
+              <Nav.Link onClick={signOut}>Sign Out</Nav.Link>
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>
