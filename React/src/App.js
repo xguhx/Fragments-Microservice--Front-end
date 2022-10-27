@@ -1,3 +1,8 @@
+import "@aws-amplify/ui-react/styles.css";
+
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
+import awsconfig from "./aws-exports";
 import { Routes, Route } from "react-router-dom";
 
 import Sidebar from "./components/sidebar/Sidebar";
@@ -8,11 +13,11 @@ import ViewFragments from "./components/viewFragments/ViewFragments";
 import NoPage from "./components/noPage/NoPage";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
-
-function App() {
+Amplify.configure(awsconfig);
+function App({ user }) {
   return (
     <div className="App">
-      <Sidebar />
+      <Sidebar user={user} />
 
       <Routes>
         <Route path="/" element={<Sidebar />} />
@@ -28,4 +33,6 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App, {
+  signUpAttributes: ["email", "name"],
+});

@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fragmentfrontend-dev-191207-authRole",
+      "UnauthRoleArn": "arn:aws:iam::353237421597:role/amplify-fragmentfrontend-dev-191207-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::353237421597:role/amplify-fragmentfrontend-dev-191207-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fragmentfrontend-dev-191207-deployment",
+      "UnauthRoleName": "amplify-fragmentfrontend-dev-191207-unauthRole",
+      "StackName": "amplify-fragmentfrontend-dev-191207",
+      "StackId": "arn:aws:cloudformation:us-east-2:353237421597:stack/amplify-fragmentfrontend-dev-191207/9caf14f0-5583-11ed-86ea-024e97862748",
+      "AmplifyAppId": "d3mncoorh2wdgt"
+    },
+    "categories": {
+      "auth": {
+        "fragmentfrontend0870973e": {
+          "userPoolId": "us-east-2_4hv9IWdAH",
+          "userPoolName": "fragments-users",
+          "webClientId": "1ggunnn194l4tv4alr3ju8i1hp",
+          "nativeClientId": "1ggunnn194l4tv4alr3ju8i1hp"
+        }
+      }
+    }
+  }
+}
