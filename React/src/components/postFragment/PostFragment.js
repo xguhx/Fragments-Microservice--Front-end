@@ -18,8 +18,10 @@ import axios from "axios";
 function PostFragment({ user }) {
   const [resData, setResData] = useState({});
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const [content, setContent] = useState("");
+  const [image, setImage] = useState("");
   const [contentType, setContentType] = useState("text/plain");
 
   const navigate = useNavigate();
@@ -54,19 +56,24 @@ function PostFragment({ user }) {
     getData();
   }, []);
 
-  console.log(resData);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(content);
-    console.log(contentType);
 
-    return;
+    //Validate Input
+
+    if (content === "" && image === "") {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+
+      return;
+    }
 
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/v1/fragments`,
-        content,
+        image ? image : content,
         {
           headers: {
             // Include the user's ID Token in the request so we're authorized
@@ -93,6 +100,7 @@ function PostFragment({ user }) {
 
     event.target.reset();
     setContent("");
+    setImage("");
     setContentType("");
   };
 
@@ -134,8 +142,8 @@ function PostFragment({ user }) {
           <Form.Control
             type="file"
             onChange={(e) => {
-              setContent(e.target.value);
-              setContentType(content.type);
+              setImage(e.target.files[0]);
+              setContentType(e.target.files[0].type);
             }}
           />
         </Form.Group>
@@ -147,6 +155,12 @@ function PostFragment({ user }) {
       {success && (
         <Alert key="success" variant="success" className="mb-3 mt-5">
           Fragment created!
+        </Alert>
+      )}
+
+      {error && (
+        <Alert key="success" variant="danger" className="mb-3 mt-5">
+          Please, complete the form before submitting!
         </Alert>
       )}
     </>
