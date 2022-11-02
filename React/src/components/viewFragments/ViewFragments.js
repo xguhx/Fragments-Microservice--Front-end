@@ -39,6 +39,7 @@ function ViewFragments({ user }) {
     getData();
   }, []);
 
+  console.log(resData);
   return (
     <div className="ViewFragments">
       <p>ViewFragments!</p>
