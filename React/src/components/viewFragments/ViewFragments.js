@@ -9,6 +9,7 @@ import { Col, Container, Row } from "react-bootstrap";
 
 function ViewFragments({ user }) {
   const [resData, setResData] = useState();
+  const [reload, setReload] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +40,8 @@ function ViewFragments({ user }) {
     };
 
     getData();
-  }, []);
+    setReload(false);
+  }, [reload, user, navigate]);
 
   return (
     <div className="ViewFragments">
@@ -51,7 +53,7 @@ function ViewFragments({ user }) {
             resData.fragments.map((frag) => {
               return (
                 <Col className="m-3" key={frag}>
-                  <FragmentCard user={user} id={frag} />
+                  <FragmentCard user={user} id={frag} setReload={setReload} />
                 </Col>
               );
             })}

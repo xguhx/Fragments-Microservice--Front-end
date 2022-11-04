@@ -5,17 +5,14 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
-import { Col, Container, Nav, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
-import ViewFragment from "../../viewFragment/ViewFragment";
-
-function FragmentCard({ user, id }) {
+function FragmentCard({ user, id, setReload }) {
   const [resData, setResData] = useState();
-  const [reload, setReload] = useState(false);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
       navigate("/");
@@ -67,13 +64,31 @@ function FragmentCard({ user, id }) {
     };
 
     fetchData();
-  }, [reload]);
+  }, [id, navigate, user]);
 
   const onClickDetail = () => {
     navigate("/view", { state: { data: resData } });
   };
 
-  const onClickDelete = () => {
+  const onClickDelete = async () => {
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/v1/fragments/${id}`,
+        {
+          headers: {
+            // Include the user's ID Token in the request so we're authorized
+            Authorization: `Bearer ${user.idToken}`,
+          },
+        }
+      );
+
+      if (!res) {
+        throw new Error(`${res.status} ${res.statusText}`);
+      }
+    } catch (err) {
+      console.error("Unable to call Delete Fragment: " + id);
+    }
+
     setReload(true);
   };
   return (

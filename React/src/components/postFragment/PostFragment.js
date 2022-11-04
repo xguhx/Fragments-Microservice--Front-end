@@ -87,20 +87,20 @@ function PostFragment({ user }) {
       if (!res) {
         throw new Error(`${res.status} ${res.statusText}`);
       }
+      event.target.reset();
+      setContent("");
+      setImage("");
     } catch (err) {
+      console.log(content, image, contentType);
       setError2(true);
-    }
 
+      return;
+    }
     setSuccess(true);
 
     setTimeout(() => {
       setSuccess(false);
     }, 3000);
-
-    event.target.reset();
-    setContent("");
-    setImage("");
-    setContentType("");
   };
 
   return (
@@ -158,14 +158,14 @@ function PostFragment({ user }) {
       )}
 
       {error && (
-        <Alert key="success" variant="danger" className="mb-3 mt-5">
+        <Alert key="incompleteForm" variant="danger" className="mb-3 mt-5">
           Please, complete the form before submitting!
         </Alert>
       )}
 
       {error2 && (
-        <Alert key="success" variant="danger" className="mb-3 mt-5">
-          Enable to create Fragment, please contact support!
+        <Alert key="error" variant="danger" className="mb-3 mt-5">
+          Unable to create Fragment, please contact support!
         </Alert>
       )}
     </>
