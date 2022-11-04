@@ -1,12 +1,14 @@
 import "./ViewFragments.css";
+import FragmentCard from "../smallerComponents/fragmentCard/FragmentCard";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { Col, Container, Row } from "react-bootstrap";
 
 function ViewFragments({ user }) {
-  const [resData, setResData] = useState({});
+  const [resData, setResData] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,17 +34,29 @@ function ViewFragments({ user }) {
 
         setResData(res.data);
       } catch (err) {
-        console.error("Unable to call GET /v1/fragments");
+        console.error("Unable to call GET /v1/fragments: " + err);
       }
     };
 
     getData();
   }, []);
 
-  console.log(resData);
   return (
     <div className="ViewFragments">
-      <p>ViewFragments!</p>
+      <h1>Hello {user && <> {user.username} </>}, check your Fragments!</h1>
+
+      <Container fluid="md">
+        <Row>
+          {resData &&
+            resData.fragments.map((frag) => {
+              return (
+                <Col className="m-3" key={frag}>
+                  <FragmentCard user={user} id={frag} />
+                </Col>
+              );
+            })}
+        </Row>
+      </Container>
     </div>
   );
 }

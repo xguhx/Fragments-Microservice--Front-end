@@ -19,6 +19,7 @@ function PostFragment({ user }) {
   const [resData, setResData] = useState({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [error2, setError2] = useState(false);
 
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
@@ -73,7 +74,7 @@ function PostFragment({ user }) {
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/v1/fragments`,
-        image ? image : content,
+        image !== "" ? image : content,
         {
           headers: {
             // Include the user's ID Token in the request so we're authorized
@@ -86,10 +87,8 @@ function PostFragment({ user }) {
       if (!res) {
         throw new Error(`${res.status} ${res.statusText}`);
       }
-
-      console.log(res);
     } catch (err) {
-      console.error("Unable to Create your Fragment.");
+      setError2(true);
     }
 
     setSuccess(true);
@@ -138,7 +137,7 @@ function PostFragment({ user }) {
         </Form.Group>
 
         <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>Upload Your Image: </Form.Label>
+          <Form.Label>Or Upload Your Image: </Form.Label>
           <Form.Control
             type="file"
             onChange={(e) => {
@@ -161,6 +160,12 @@ function PostFragment({ user }) {
       {error && (
         <Alert key="success" variant="danger" className="mb-3 mt-5">
           Please, complete the form before submitting!
+        </Alert>
+      )}
+
+      {error2 && (
+        <Alert key="success" variant="danger" className="mb-3 mt-5">
+          Enable to create Fragment, please contact support!
         </Alert>
       )}
     </>

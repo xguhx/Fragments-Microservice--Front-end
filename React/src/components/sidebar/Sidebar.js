@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 function Sidebar({ user, signOut }) {
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" className="mb-5">
       <Container fluid>
         <Nav.Link as={Link} to="/">
           <Navbar.Brand>Fragments</Navbar.Brand>
@@ -21,21 +21,15 @@ function Sidebar({ user, signOut }) {
                 Post Fragment
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link as={Link} to="/viewAll">
+                View All Fragments
+              </Nav.Link>
+            </Nav.Item>
 
             <Nav.Item>
               <Nav.Link as={Link} to="/convert">
                 Convert Fragment
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/view">
-                View Fragment
-              </Nav.Link>
-            </Nav.Item>
-
-            <Nav.Item>
-              <Nav.Link as={Link} to="/viewAll">
-                View All Fragments
               </Nav.Link>
             </Nav.Item>
 
