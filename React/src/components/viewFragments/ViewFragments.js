@@ -20,7 +20,7 @@ function ViewFragments({ user }) {
     const getData = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/v1/fragments`,
+          `${process.env.REACT_APP_API_URL}/v1/fragments/?expand=1`,
           {
             headers: {
               // Include the user's ID Token in the request so we're authorized
@@ -32,8 +32,8 @@ function ViewFragments({ user }) {
         if (!res) {
           throw new Error(`${res.status} ${res.statusText}`);
         }
-
-        setResData(res.data);
+        console.log(res);
+        setResData(res.data.fragments);
       } catch (err) {
         console.error("Unable to call GET /v1/fragments: " + err);
       }
@@ -50,13 +50,30 @@ function ViewFragments({ user }) {
       <Container fluid="md">
         <Row>
           {resData &&
-            resData.fragments.map((frag) => {
-              return (
-                <Col className="m-3" key={frag}>
-                  <FragmentCard user={user} id={frag} setReload={setReload} />
-                </Col>
-              );
-            })}
+            resData
+              .sort((a, b) => {
+                let fa = a.updated.toLowerCase(),
+                  fb = b.updated.toLowerCase();
+
+                if (fa > fb) {
+                  return -1;
+                }
+                if (fa < fb) {
+                  return 1;
+                }
+                return 0;
+              })
+              .map((frag) => {
+                return (
+                  <Col className="m-3" key={frag.id}>
+                    <FragmentCard
+                      user={user}
+                      id={frag.id}
+                      setReload={setReload}
+                    />
+                  </Col>
+                );
+              })}
         </Row>
       </Container>
     </div>
