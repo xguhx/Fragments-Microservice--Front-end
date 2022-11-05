@@ -91,9 +91,10 @@ function PostFragment({ user }) {
       setContent("");
       setImage("");
     } catch (err) {
-      console.log(content, image, contentType);
       setError2(true);
-
+      setTimeout(() => {
+        setError2(false);
+      }, 3000);
       return;
     }
     setSuccess(true);
