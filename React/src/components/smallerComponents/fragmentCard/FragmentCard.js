@@ -85,6 +85,12 @@ function FragmentCard({ user, id, setReload }) {
   };
 
   const onClickDelete = async () => {
+    const confirmed = window.confirm("Are you sure?");
+
+    if (!confirmed) {
+      return;
+    }
+
     try {
       const res = await axios.delete(
         `${process.env.REACT_APP_API_URL}/v1/fragments/${id}`,
