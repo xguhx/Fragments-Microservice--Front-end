@@ -1,6 +1,6 @@
 import "./PostFragment.css";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
@@ -16,7 +16,6 @@ import axios from "axios";
  * */
 
 function PostFragment({ user }) {
-  const [resData, setResData] = useState({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [error2, setError2] = useState(false);
@@ -31,30 +30,6 @@ function PostFragment({ user }) {
     if (!user || user === undefined) {
       navigate("/");
     }
-
-    const getData = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/v1/fragments`,
-          {
-            headers: {
-              // Include the user's ID Token in the request so we're authorized
-              Authorization: `Bearer ${user.idToken}`,
-            },
-          }
-        );
-
-        if (!res) {
-          throw new Error(`${res.status} ${res.statusText}`);
-        }
-
-        setResData(res.data);
-      } catch (err) {
-        console.error("Unable to call GET /v1/fragments");
-      }
-    };
-
-    getData();
   }, []);
 
   const handleSubmit = async (event) => {
@@ -122,8 +97,7 @@ function PostFragment({ user }) {
         <Form.Group className="mb-3" controlId="formBasicContentType">
           <Form.Label>Content-Type: </Form.Label>
 
-          <Form.Control
-            as="select"
+          <Form.Select
             aria-label="Default select example"
             value={contentType}
             onChange={(e) => setContentType(e.target.value)}
@@ -134,7 +108,7 @@ function PostFragment({ user }) {
             <option value="text/markdown">text/markdown</option>
             <option value="text/html">text/html</option>
             <option value="application/json">application/json</option>
-          </Form.Control>
+          </Form.Select>
         </Form.Group>
 
         <Form.Group controlId="formFile" className="mb-3">
