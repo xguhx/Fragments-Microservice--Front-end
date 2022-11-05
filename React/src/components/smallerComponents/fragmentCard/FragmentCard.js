@@ -54,7 +54,7 @@ function FragmentCard({ user, id, setReload }) {
               Authorization: `Bearer ${user.idToken}`,
             },
             responseType: data.fragment.type.startsWith("text")
-              ? "stream"
+              ? "json"
               : "arraybuffer",
           }
         );

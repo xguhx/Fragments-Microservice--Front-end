@@ -1,9 +1,115 @@
 import "./ViewFragment.css";
 
-function ViewFragment() {
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
+
+import axios from "axios";
+
+//TODO
+//ADD UPDATE FRAGMENT BUTTON
+//ADD CONVERT FRAGMENT BUTTON
+
+function ViewFragment({ user }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, []);
+
+  const data = location.state.data.data;
+  const fragment = location.state.data.fragment;
+
+  const onClickDelete = async () => {
+    const confirmed = window.confirm("Are you sure?");
+
+    if (!confirmed) {
+      return;
+    }
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/v1/fragments/${fragment.id}`,
+        {
+          headers: {
+            // Include the user's ID Token in the request so we're authorized
+            Authorization: `Bearer ${user.idToken}`,
+          },
+        }
+      );
+
+      if (!res) {
+        throw new Error(`${res.status} ${res.statusText}`);
+      }
+    } catch (err) {
+      console.error("Unable to call Delete Fragment: " + fragment.id);
+    }
+
+    navigate("/viewAll", { state: { user: user } });
+  };
+
   return (
     <div className="ViewFragment">
-      <p>ViewFragment!</p>
+      <Container fluid="md">
+        <Card>
+          <Card.Header>
+            Details for Fragment <strong>{fragment && fragment.id}</strong>
+          </Card.Header>
+
+          {fragment && fragment.type.startsWith("text/") && (
+            <Card.Title className="text-center m-3">{data}</Card.Title>
+          )}
+          {data && fragment.type.startsWith("image/") && (
+            <Card.Img
+              className="mx-auto m-3"
+              style={{ width: "auto", maxWidth: "70%" }}
+              variant="top"
+              src={data}
+            />
+          )}
+          <Card.Body>
+            <ListGroup variant="flush">
+              {location &&
+                Object.entries(fragment).map(([key, value]) => {
+                  return (
+                    <div key={key}>
+                      <ListGroup.Item>
+                        <strong>
+                          {key === "ownerId"
+                            ? "Owner"
+                            : key.charAt(0).toLocaleUpperCase() +
+                              key.substring(1)}
+                        </strong>
+                        :{" "}
+                        {key === "ownerId"
+                          ? user.username
+                          : key === "created" || key === "updated"
+                          ? new Date(value).toString()
+                          : value}
+                        {key === "size" && " bytes"}
+                      </ListGroup.Item>
+                    </div>
+                  );
+                })}
+            </ListGroup>
+
+            <Row className="text-center m-3">
+              <Col>
+                <Button onClick={() => console.log("hi")}> Update </Button>
+              </Col>
+              <Col>
+                <Button onClick={() => console.log("hi2")}> Convert </Button>
+              </Col>
+              <Col>
+                <Button onClick={onClickDelete}> Delete </Button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </Container>
     </div>
   );
 }

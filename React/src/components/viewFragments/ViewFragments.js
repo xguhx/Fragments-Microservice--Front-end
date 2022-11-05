@@ -2,7 +2,7 @@ import "./ViewFragments.css";
 import FragmentCard from "../smallerComponents/fragmentCard/FragmentCard";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 import { Col, Container, Row } from "react-bootstrap";
@@ -11,7 +11,9 @@ function ViewFragments({ user }) {
   const [resData, setResData] = useState();
   const [reload, setReload] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  user = user ? user : location.state.user;
   useEffect(() => {
     if (!user) {
       navigate("/");
@@ -32,7 +34,7 @@ function ViewFragments({ user }) {
         if (!res) {
           throw new Error(`${res.status} ${res.statusText}`);
         }
-        console.log(res);
+
         setResData(res.data.fragments);
       } catch (err) {
         console.error("Unable to call GET /v1/fragments: " + err);
