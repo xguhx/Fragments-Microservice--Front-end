@@ -1,13 +1,14 @@
 import "./PostFragment.css";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 
 import axios from "axios";
+import { setFormOrder } from "@aws-amplify/ui";
 
 /**
  * TODO: ADD USE REF FOR THE FORM
@@ -25,10 +26,21 @@ function PostFragment({ user }) {
   const [contentType, setContentType] = useState("text/plain");
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const editing = location.state ? true : false;
 
   useEffect(() => {
     if (!user || user === undefined) {
       navigate("/");
+    }
+
+    if (editing) {
+      location.state.fragment.type.startsWith("text")
+        ? setContent(location.state.data)
+        : setImage("");
+
+      setContentType("text/plain");
     }
   }, []);
 
@@ -47,31 +59,46 @@ function PostFragment({ user }) {
     }
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/fragments`,
-        image !== "" ? image : content,
-        {
-          headers: {
-            // Include the user's ID Token in the request so we're authorized
-            Authorization: `Bearer ${user.idToken}`,
-            "Content-Type": contentType,
-          },
-        }
-      );
+      const res = editing
+        ? await axios.put(
+            `${process.env.REACT_APP_API_URL}/v1/fragments/${location.state.fragment.id}`,
+            image !== "" ? image : content,
+            {
+              headers: {
+                // Include the user's ID Token in the request so we're authorized
+                Authorization: `Bearer ${user.idToken}`,
+                "Content-Type": contentType,
+              },
+            }
+          )
+        : await axios.post(
+            `${process.env.REACT_APP_API_URL}/v1/fragments`,
+            image !== "" ? image : content,
+            {
+              headers: {
+                // Include the user's ID Token in the request so we're authorized
+                Authorization: `Bearer ${user.idToken}`,
+                "Content-Type": contentType,
+              },
+            }
+          );
 
       if (!res) {
         throw new Error(`${res.status} ${res.statusText}`);
       }
+
       event.target.reset();
       setContent("");
       setImage("");
     } catch (err) {
+      console.log(err);
       setError2(true);
       setTimeout(() => {
         setError2(false);
       }, 3000);
       return;
     }
+
     setSuccess(true);
 
     setTimeout(() => {
@@ -81,14 +108,17 @@ function PostFragment({ user }) {
 
   return (
     <>
-      <h1>Hello {user && <> {user.username} </>}, lets create a Fragment!</h1>
+      <h1>
+        Hello {user && <> {user.username} </>}, lets{" "}
+        {editing ? "update" : "create"} a Fragment!
+      </h1>
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3 mt-5" controlId="formBasicContent">
           <Form.Label>Fragment Content: </Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter content"
+            placeholder={content !== "" ? content : "Enter content"}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
@@ -140,7 +170,8 @@ function PostFragment({ user }) {
 
       {error2 && (
         <Alert key="error" variant="danger" className="mb-3 mt-5">
-          Unable to create Fragment, please contact support!
+          Unable to {editing ? "update" : "create"} Fragment, please contact
+          support!
         </Alert>
       )}
     </>

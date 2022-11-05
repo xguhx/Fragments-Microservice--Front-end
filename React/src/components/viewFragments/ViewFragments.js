@@ -2,7 +2,7 @@ import "./ViewFragments.css";
 import FragmentCard from "../smallerComponents/fragmentCard/FragmentCard";
 
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { Col, Container, Row } from "react-bootstrap";
@@ -11,9 +11,7 @@ function ViewFragments({ user }) {
   const [resData, setResData] = useState();
   const [reload, setReload] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  user = user ? user : location.state.user;
   useEffect(() => {
     if (!user) {
       navigate("/");

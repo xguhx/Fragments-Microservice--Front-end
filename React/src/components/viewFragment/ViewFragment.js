@@ -48,7 +48,13 @@ function ViewFragment({ user }) {
       console.error("Unable to call Delete Fragment: " + fragment.id);
     }
 
-    navigate("/viewAll", { state: { user: user } });
+    navigate("/viewAll");
+  };
+
+  const onClickUpdate = () => {
+    navigate("/newFragment", {
+      state: { user: user, data: data, fragment: fragment },
+    });
   };
 
   return (
@@ -56,13 +62,14 @@ function ViewFragment({ user }) {
       <Container fluid="md">
         <Card>
           <Card.Header>
-            Details for Fragment <strong>{fragment && fragment.id}</strong>
+            Details for Fragment{" "}
+            <strong>{user && fragment && fragment.id}</strong>
           </Card.Header>
 
-          {fragment && fragment.type.startsWith("text/") && (
+          {user && fragment && fragment.type.startsWith("text/") && (
             <Card.Title className="text-center m-3">{data}</Card.Title>
           )}
-          {data && fragment.type.startsWith("image/") && (
+          {user && data && fragment.type.startsWith("image/") && (
             <Card.Img
               className="mx-auto m-3"
               style={{ width: "auto", maxWidth: "70%" }}
@@ -72,7 +79,8 @@ function ViewFragment({ user }) {
           )}
           <Card.Body>
             <ListGroup variant="flush">
-              {location &&
+              {user &&
+                location &&
                 Object.entries(fragment).map(([key, value]) => {
                   return (
                     <div key={key}>
@@ -98,7 +106,7 @@ function ViewFragment({ user }) {
 
             <Row className="text-center m-3">
               <Col>
-                <Button onClick={() => console.log("hi")}> Update </Button>
+                <Button onClick={onClickUpdate}> Update </Button>
               </Col>
               <Col>
                 <Button onClick={() => console.log("hi2")}> Convert </Button>
