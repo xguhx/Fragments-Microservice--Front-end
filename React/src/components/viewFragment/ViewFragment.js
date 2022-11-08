@@ -53,6 +53,12 @@ function ViewFragment({ user }) {
 
   const onClickUpdate = () => {
     navigate("/newFragment", {
+      state: { data: data, fragment: fragment },
+    });
+  };
+
+  const onClickConvert = () => {
+    navigate("/convert", {
       state: { user: user, data: data, fragment: fragment },
     });
   };
@@ -109,7 +115,7 @@ function ViewFragment({ user }) {
                 <Button onClick={onClickUpdate}> Update </Button>
               </Col>
               <Col>
-                <Button onClick={() => console.log("hi2")}> Convert </Button>
+                <Button onClick={onClickConvert}> Convert </Button>
               </Col>
               <Col>
                 <Button onClick={onClickDelete}> Delete </Button>

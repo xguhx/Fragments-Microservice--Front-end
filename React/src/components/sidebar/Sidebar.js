@@ -18,18 +18,12 @@ function Sidebar({ user, signOut }) {
           <Nav className="container-fluid">
             <Nav.Item>
               <Nav.Link as={Link} to="/newFragment">
-                Post Fragment
+                Create Fragment
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link as={Link} to="/viewAll">
                 View All Fragments
-              </Nav.Link>
-            </Nav.Item>
-
-            <Nav.Item>
-              <Nav.Link as={Link} to="/convert">
-                Convert Fragment
               </Nav.Link>
             </Nav.Item>
 
